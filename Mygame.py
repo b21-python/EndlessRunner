@@ -1,7 +1,7 @@
 #Import pygame module
 import pygame
 from pygame.locals import *
-
+#MAKEQUCK GUIDE FOR LEVELS
 #Initialize the pygame
 pygame.init()
 
@@ -21,6 +21,8 @@ H = 3
 player = { "Area":[10, 10, 180, 40], "Color":ORANGE, "Speed":1 }
 
 groundlevel = 400
+groundspeed = 3
+
 
 #game window size
 width = 640
@@ -34,13 +36,15 @@ screen = pygame.display.set_mode([width, height])
 keys = { K_a:0, K_d:0, K_w:0, K_s:0 }
 
 #keeps time for game
-gameClock = pygame.time.Clock()
+gameClock = pygame.time.Clock() 
 
 gameActive = True
 
-obstacles = [Rect(width, groundlevel - 20, 20, 20),
-            Rect(width + 300, -20, 60, 40),
-            Rect(width + 380 , -20, 80, 40)]
+obstacles = [Rect(width, groundlevel - 20, 20, 20), 
+            Rect(width + 200, groundlevel - 30, 20, 30), 
+            Rect(width + 410, groundlevel - 20, 40, 20),
+            Rect(width + 780, groundlevel - 40, 20, 40),
+            Rect(width + 975, groundlevel - 10, 50, 10)]
             
 
 
@@ -61,9 +65,7 @@ while gameActive:
     pygame.draw.rect(screen, ORANGE, [0, groundlevel, width, height - groundlevel])
     for ob in obstacles:
          pygame.draw.rect(screen, "brown", ob)
-         
-    for ob in obstacles:
-        ob.move_ip(-groundspeed, 0)
+        
     
     #Draw arena (surface)
     pygame.display.update()
@@ -88,6 +90,8 @@ while gameActive:
         player["Area"][X] = updatedX
     if updatedY >= 0 and updatedY + player["Area"][H] <= groundlevel:
         player["Area"][Y] = updatedY
+    for ob in obstacles:
+        ob.move_ip(-groundspeed, 0)
         
 
 #end pygame
