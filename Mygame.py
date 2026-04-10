@@ -22,6 +22,8 @@ player = { "Area":[10, 10, 180, 40], "Color":ORANGE, "Speed":1 }
 
 groundlevel = 400
 groundspeed = 3
+fallspeed = 0
+gravity = 1
 
 
 #game window size
@@ -84,6 +86,15 @@ while gameActive:
     yMovement = keys[K_s] - keys[K_w]
     updatedX = player["Area"][X] + xMovement
     updatedY = player["Area"][Y] + yMovement
+    if player["Area"][Y] + player["Area"][H] < groundlevel:
+        fallspeed += gravity
+        print("fallSpeed: ", fallspeed)
+    else:
+        fallspeed = 0
+    updatedX = player["Area"][X] + xMovement
+    updatedY = player["Area"][Y] + yMovement + fallspeed
+    
+    
 
     #Update player position if new position is in bounds
     if updatedX >= 0 and updatedX + player["Area"][W] <= width:
