@@ -18,7 +18,7 @@ H = 3
 ####game variables####
 
 #Player state       X   Y   W   H
-player = { "Area":[10, 10, 180, 40], "Color":ORANGE, "Speed":1 }
+player = { "Area":[10, 10, 60, 40], "Color":ORANGE, "Speed":15}
 
 groundlevel = 400
 groundspeed = 3
@@ -94,6 +94,18 @@ while gameActive:
     updatedX = player["Area"][X] + xMovement
     updatedY = player["Area"][Y] + yMovement + fallspeed
     
+    #intersecting with  obstacles
+    updatedPlayerRect = Rect(updatedX, updatedY, player["Area"][W], player["Area"][H])
+    intersectIndex = updatedPlayerRect.collidelist(obstacles)
+    intersectsObstacles = intersectIndex != -1
+
+    if intersectsObstacles:
+        ob = obstacles[intersectIndex]
+        if updatedX + player["Area"][W] > ob.x and updatedX < ob.right:
+            updatedX = ob.x - player["Area"][W]
+      #  if updatedY + player["Area"][H] > ob.y:
+           # updatedY = ob.y - player["Area"][H]
+        fallSpeed = 0
     
 
     #Update player position if new position is in bounds
@@ -103,7 +115,8 @@ while gameActive:
         player["Area"][Y] = updatedY
     for ob in obstacles:
         ob.move_ip(-groundspeed, 0)
-        
+    if updatedY + player["Area"][H] > groundlevel:
+        player["Area"][Y] = groundlevel - player["Area"][H]
 
 #end pygame
 pygame.quit()
